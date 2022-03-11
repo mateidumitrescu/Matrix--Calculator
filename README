@@ -1,0 +1,63 @@
+Programul foloseste 13 functii pentru modularizare
+De asemenea, am folosit cateva #define uri pentru a inlocui literele citite de la tastatura pentru fiecare operatie
+Initial am alocat unei liste de tip struct memorie de 51 (in cod capacity retine aceasta memorie).
+Daca alocarea reuseste se va folosi functia start_program ce contine toate testele
+din cerinta
+
+my_struct este o structura ce are 4 campuri: numarul de linii si de coloane al fiecarei matrici (m si n), matricea in sine 
+(**matrix) si suma (s) elementelor matricei.
+
+Se foloseste variabila index initializata cu 0 pentru a contoriza numarul de matrici.
+Se foloseste si variabila tester care cat timp va fi 1, se introduc caractere de la tastatura.
+    - In cazul ALLOC ('L') se introduce o matrice in lista folosindu-se functia alloc_matrix. Tot aici
+    se va mari si index cu 1, iar daca acesta devine = capacity, se va realoca memorie listei prin
+    functia realloc_mem, iar capacity se va mari de 2 ori;
+
+    -In cazul DIMENSION('D') se vor afisa m si n din structura pentru matricea indexului dat.
+
+    -In cazul PRINT('P') se va folosi functia print_matrix ce va afisa matricea de la indexul dat.
+
+    -In cazul REDIMENSION('C') se va folosi functia redim_matrix pentru a redimensiona matricea de la
+    indexul dat. In acest se folosesc 2 vectori alocati si ei dinamic ce retin indexii liniilor si 
+    coloanelor matricei ce trebuie redimensionate. Dupa aceasta, daca indexul dat nu corespunde
+    niciunei matrici atunci se va afisa mesajul din cerinta. Altfel se aloca dinamic o alta matrice 
+    cu dimensiunile date si se vor copia in ea valorile respective din matricea initiala. Dupa
+    se elibereaza memoria din matricea initiala, se aloca alta memorie si se copiaza in ea matricea
+    noua, care va fi eliberata si ea dupa aceste operatii.
+
+    -In cazul MULTIPLICATION('M') se verifica prima data daca indexii matricelor exista si daca cele
+    2 matrici sunt campatibile. Altfel, se foloseste functia multip_matrices in care se creeaza
+    o matrice de dimensiunea celei ce trebuie rezultata si se va aplica algoritmul de inmultire
+    a doua matrici. Aceasta noua matrice va fi alocata la finalul listei. De asemenea, initial,
+    matricea noua va fi alocata cu calloc pentru a o initializa cu 0.
+
+    -In cazul SORT('O') se va folosi variabila s din structura pentru a retine suma elementelor fiecarei
+    matrici. Acest lucru se face folosindu-se functia sum_elem_mat. Apoi, se foloseste functia
+    sort_matrices ce se va ocupa cu sortarea matricelor. Aceasta functie contine algoritmul bubble sort.
+    Pentru a face swap intre 2 matrici se foloseste functia swap_matrices. Aceasta se creeaza o matrice
+    temporala pentru a copia una dintre matrici in ea si pentru a se face interschimbarea (algoritm de 
+    interschimbare stas).
+
+    -In cazul TRANSPOSE('T') se verifica daca exista matricea de la indexul dat, dupa care se foloseste
+    functia trasnpose in care se creeaza o matrice temporala cu dimensiunile matricei transpuse
+    dupa care se actualizeaza matricea veche cu cea noua si dimensiunile sale.
+
+    -In cazul FREE('F') se verifica daca esista matricea de la indexul dat. Daca exista se foloseste 
+    functia start_free ce va sterge matricea de la indexul dat. Se parcurge lista de la acel index si
+    la fiecare pas se sterge o matrice si se copiaza cea de pe index+1 folosindu-se functia free_position.
+    Toate dimensiunile vor fi actualizate in aceasta functie. De asemenea, daca in urma mai multor operatii
+    de genul acesta index ajunge < capacity, atunci capacity se injumatateste si se realoca memorie mai mica
+    listei de matrici.
+
+    -In cazul QUIT('Q') se foloseste functia free_mem ce va dezaloca toata memoria listei.
+
+    -In cazul STRASSEN('S') se foloseste functia strassen ce verfica mai intai daca matricilie sunt
+    compatibile si daca exista, iar apoi se foloseste functia start_strassen ce contine algoritmul strassen
+    propriu-zis. Am mai creat inca 4 functii:
+            -alloc_tmp_mat ce aloca matrici temporale pentru functia recursiva start_strassen
+            -free_tmp_mat ce elibereaza memoria matricilor temporale
+            -add ce face suma dintre doua matrici
+            -subtract ce face diferenta intre doua matrici
+
+Din ce se poate observa majoritatea functiilor se bazeaza pe aceeasi idee, intrucat multe dintre ele
+contin o matrice temporala in care se copiaza sau se trec alte matrici sau o operatie intre 2 matrici.
